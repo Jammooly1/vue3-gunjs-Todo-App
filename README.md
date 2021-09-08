@@ -1,3 +1,9 @@
+# Description
+## Vue3
+I used ``vue create [project-name]`` to create this project. This project presents a simple Todo-App created using Vue3 and GunJS. 
+CSS is from milligram. I think it's pretty cool :)
+
+
 # gunjs
 
 ## Project setup
