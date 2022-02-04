@@ -5,9 +5,15 @@ import { store } from '@/store'
 const login = (username, password) => {
     console.log('trying to log in')
     try {
-        user.auth(username, password, ({err}) => err && alert(err));
+        const check = user.auth(username, password, ({err}) => err && alert(err));
         console.log('logged in')
-        store.state.cur_user = true;
+        console.log(check)
+        if(check.is) {
+            store.state.cur_user = true;
+        } else {
+            store.state.cur_user = false;
+        }
+        
     } catch (error) {
         console.log('error logging in')
         store.state.cur_user = false;
