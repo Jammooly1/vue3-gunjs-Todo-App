@@ -30,8 +30,9 @@ export default {
         const router = useRouter()
 
         console.log('navbar')
-        console.log(username)
+        //console.log(username)
         const logout = () => {
+            console.log('logging out')
             user.leave()
             username.value = ''
             router.push('/login')

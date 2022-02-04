@@ -2,14 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/auth/Login.vue'
 import Signup from '../views/auth/Signup.vue'
-import {user, username} from '@/composables/user'
+import { ref } from 'vue'
+import { store } from '@/store'
 
 const requireAuth = (to, from, next) => {
-  console.log(user, !user.is, user.is, user)
-  if(!user.is) {
+  console.log('HELLO, I am in the route guard')
+  console.log(store.state.cur_user)
+  if(!store.state.cur_user) {
     next({ name: 'Login' })
+    console.log('1')
   } else {
     next()
+    console.log('2')
   }
 }
 
