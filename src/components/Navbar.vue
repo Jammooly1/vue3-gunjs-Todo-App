@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { username, user } from '@/composables/user'
+import { username, user } from '@/gun/user'
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
 

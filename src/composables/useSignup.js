@@ -1,4 +1,4 @@
-import { user } from '@/composables/user'
+import { user } from '@/gun/user'
 import router from '@/router'
 //import { store } from '@/store'
 import useLogin from '@/composables/useLogin'

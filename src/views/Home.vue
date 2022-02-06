@@ -28,6 +28,7 @@
 <script>
 import Gun from 'gun'
 import { ref } from '@vue/reactivity'
+import { user } from '@/gun/user'
 
 export default {
   name: 'Home',
