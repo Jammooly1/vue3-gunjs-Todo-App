@@ -38,7 +38,6 @@ export default {
     const arr = ref([])
     const seen = new Set()
     const edited = ref(false)
-    const edited_index = ref(0)
 
     const addToGun = () => {
       todos.get('tasks').set({desc: task.value, checked: false})
@@ -52,9 +51,10 @@ export default {
     const editFromGun = (id) => {
       todos.get('tasks').get(id).put({desc: task.value})
       edited.value = true
-      edited_index.value = arr.value.findIndex(key => key.taskId === id);
-      arr.value.splice(edited_index.value, 1, {desc: task.value, taskId: id, checked: task.checked})
+      var edited_index = arr.value.findIndex(key => key.taskId === id);
+      arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
       task.value = ''
+      edited.value = false
     }
 
     const deleteFromGun = (id) => {
@@ -66,18 +66,13 @@ export default {
 
         
     todos.get('tasks').map().on((task, id) => { // on snapshot
-      if(task && !seen.has(id) || task && edited.value) {
+      if(task && !seen.has(id)) {
         seen.add(id)
-        if(edited.value) {
-          edited.value = false
-        }
-        else {
-          arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
-        }
+        arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
+        
       }
     })
 
-    //console.log(todos)
     return { task, arr, addToGun, deleteFromGun, editFromGun, toggleBox }
   }
 }
@@ -104,3 +99,16 @@ export default {
   align-items: center;
 }
 </style>
+
+
+// todos.get('tasks').map().on((task, id) => { // on snapshot
+//       if(task && !seen.has(id) || task && edited.value) {
+//         seen.add(id)
+//         if(edited.value) {
+//           edited.value = false
+//         }
+//         else {
+//           arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
+//         }
+//       }
+//     })

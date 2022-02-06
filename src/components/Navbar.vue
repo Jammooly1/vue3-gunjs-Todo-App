@@ -1,22 +1,28 @@
 <template>
-  <nav>
+  <nav :key="route.fullPath">
       <div class="navbar">
         <div class="navbar-start">
-          <div v-if="store.state.user" class="navbar-item">
-            <router-link to="/">Home</router-link>
+          <div v-if="user.is" class="navbar-group">
+            <div class="navbar-item">
+              <router-link to="/">Home</router-link>
+            </div>
+            <div class="navbar-item">
+              <router-link to="/about">About</router-link>
+            </div>
+            <div class="navbar-item">
+              <label @click="logout">Log Out</label>
+            </div>
+            
           </div>
-          <div v-if="store.state.user" class="navbar-item">
-            <router-link to="/about">About</router-link>
+          <div v-if="!user.is" class="navbar-group">
+            <div class="navbar-item">
+              <router-link to="/login">Login</router-link>
+            </div>
+            <div>
+              <router-link to="/signup">Sign Up</router-link>
+            </div>
           </div>
-          <div v-if="!store.state.user" class="navbar-item">
-            <router-link to="/login">Login</router-link>
-          </div>
-          <div v-if="!store.state.user" class="navbar-item">
-            <router-link to="/signup">Sign Up</router-link>
-          </div>
-          <div v-if="store.state.user" class="navbar-item">
-            <label @click="logout">Log Out</label>
-          </div>
+
         </div>
       </div>
   </nav>
@@ -25,24 +31,22 @@
 <script>
 import { username, user } from '@/composables/user'
 import { useRouter } from 'vue-router'
-import { store } from '@/store'
+import { useRoute } from 'vue-router'
 
 export default {
     setup() {
         const router = useRouter()
+        const route = useRoute()
 
-        console.log('navbar')
-        console.log(!user.is)
-        //console.log(username)
         const logout = () => {
             console.log('logging out')
             user.leave()
+
             username.value = ''
-            store.state.user = false
             router.push('/login')
         }
 
-        return { logout, username, store }
+        return { logout, user, route }
     }
 }
 </script>
@@ -64,13 +68,19 @@ label:hover {
 
 .navbar-start {
   margin-left: auto;
-  display: inline-flex;
 }
 
-.navbar-item {
+.navbar-group {
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  display: inline-flex;
+  
+}
+
+.navbar-item {
+  cursor: pointer;
+  margin-right: 15px;
 }
 
 </style>
