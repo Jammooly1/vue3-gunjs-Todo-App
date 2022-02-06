@@ -1,18 +1,17 @@
 import { user } from '@/composables/user'
 import { store } from '@/store'
+import { ref } from 'vue'
 
 
 const login = (username, password) => {
     console.log('trying to log in')
     try {
-        const check = user.auth(username, password, ({err}) => err && alert(err));
+        user.auth(username, password, ({err}) => err && alert(err));
         console.log('logged in')
-        console.log(check)
-        if(check.is) {
-            store.state.cur_user = true;
-        } else {
-            store.state.cur_user = false;
-        }
+        console.log('user.is is ', user.is)
+        console.log('user object is ', user)
+            
+        store.state.cur_user = true
         
     } catch (error) {
         console.log('error logging in')

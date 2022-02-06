@@ -15,7 +15,7 @@ export const username = ref('');
 user.get('alias').on(v => username.value = v)
 
 export const checkExists = db.on('auth', async(event) => {
-    console.log('INTERRUPTED')
+    //console.log('INTERRUPTED')
     username.value = await user.get('alias');
 
     if(user.is) {
@@ -23,8 +23,8 @@ export const checkExists = db.on('auth', async(event) => {
     } else {
         store.state.cur_user = false;
     }
-    console.log('cur_user: ', store.state.cur_user)
+    //console.log('cur_user: ', store.state.cur_user)
 
-    console.log(username.value + ' in db ' + (user.is !== null))
+    //console.log(username.value + ' in db ' + (user.is !== null))
     console.log('Signed in as ' + username.value);
 })
