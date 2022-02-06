@@ -2,19 +2,19 @@
   <nav>
       <div class="navbar">
         <div class="navbar-start">
-          <div v-if="username" class="navbar-item">
+          <div v-if="store.state.user" class="navbar-item">
             <router-link to="/">Home</router-link>
           </div>
-          <div v-if="username" class="navbar-item">
+          <div v-if="store.state.user" class="navbar-item">
             <router-link to="/about">About</router-link>
           </div>
-          <div v-if="!username" class="navbar-item">
+          <div v-if="!store.state.user" class="navbar-item">
             <router-link to="/login">Login</router-link>
           </div>
-          <div v-if="!username" class="navbar-item">
+          <div v-if="!store.state.user" class="navbar-item">
             <router-link to="/signup">Sign Up</router-link>
           </div>
-          <div v-if="username" class="navbar-item">
+          <div v-if="store.state.user" class="navbar-item">
             <label @click="logout">Log Out</label>
           </div>
         </div>
@@ -25,20 +25,24 @@
 <script>
 import { username, user } from '@/composables/user'
 import { useRouter } from 'vue-router'
+import { store } from '@/store'
+
 export default {
     setup() {
         const router = useRouter()
 
         console.log('navbar')
+        console.log(!user.is)
         //console.log(username)
         const logout = () => {
             console.log('logging out')
             user.leave()
             username.value = ''
+            store.state.user = false
             router.push('/login')
         }
 
-        return { logout, username }
+        return { logout, username, store }
     }
 }
 </script>

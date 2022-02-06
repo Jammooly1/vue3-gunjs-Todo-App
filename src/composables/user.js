@@ -19,9 +19,9 @@ export const checkExists = db.on('auth', async(event) => {
     username.value = await user.get('alias');
 
     if(user.is) {
-        store.state.cur_user = true;    
+        store.state.user = true;    
     } else {
-        store.state.cur_user = false;
+        store.state.user = false;
     }
     //console.log('cur_user: ', store.state.cur_user)
 

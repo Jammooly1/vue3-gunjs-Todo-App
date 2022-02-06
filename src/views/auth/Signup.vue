@@ -1,7 +1,7 @@
 <template>
     <div class="signup">
         <h1>Sign Up</h1>
-        <form @submit.prevent="signup">
+        <form @submit.prevent="handleSubmit">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" v-model="username">
@@ -17,32 +17,19 @@
 
 <script>
 import { ref } from 'vue'
-import {user} from '@/composables/user'
-import {useRouter} from 'vue-router'
+import useSignup from '@/composables/useSignup'
 
 export default {
     setup() {
         const username = ref('')
         const password = ref('')
-        const router = useRouter()
+        const {signup} = useSignup()
 
-        const signup = () => {
-            console.log('signed up')
-            user.create(username.value, password.value, ({err}) => {
-                if (err) {
-                    alert(err)
-                } else {
-                    user.auth(username.value, password.value, ({err}) => {
-                        if (err) {
-                            alert(err)
-                        }
-                    })
-                }
-            })
-            router.push('/')
+        const handleSubmit = () => {
+            signup(username.value, password.value)
         }
 
-        return { signup, password, username }
+        return { handleSubmit, password, username }
     },
 }
 </script>

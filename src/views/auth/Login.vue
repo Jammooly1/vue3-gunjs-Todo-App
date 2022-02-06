@@ -17,35 +17,17 @@
 
 <script>
 import { ref } from 'vue'
-import { user } from '@/composables/user'
-import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
 import useLogin from '@/composables/useLogin'
-import { store } from '@/store'
 
 export default {
     setup() {
         const username = ref('')
         const password = ref('')
-        const {login, x} = useLogin()
-        const router = useRouter()
-        const route = useRoute()
+        const {login} = useLogin()
+
 
         const handleSubmit = async() => {
             login(username.value, password.value)
-
-            //console.log('router push')
-            console.log(route.path)
-            if(route.path === '/login') {
-                //console.log('in if statement')
-                //console.log('x is ' + x)
-                //console.log('user not ' + !user.is)
-                await router.push({ name: "Home"}).catch(()=>{});
-                //console.log(navigationResult)
-            }
-            
-            //console.log('router pushed')
-
         }
 
         return { handleSubmit, password, username }

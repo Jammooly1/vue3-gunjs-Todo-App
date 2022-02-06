@@ -77,7 +77,7 @@ export default {
       }
     })
 
-    console.log(todos)
+    //console.log(todos)
     return { task, arr, addToGun, deleteFromGun, editFromGun, toggleBox }
   }
 }
