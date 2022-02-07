@@ -40,7 +40,9 @@ export default {
 
     const addToGun = () => {
       console.log(task.value)
-      todos.get('tasks').set({desc: task.value, checked: false})
+      if(task.value !== '') {
+        todos.get('tasks').set({desc: task.value, checked: false})
+      }
       task.value = ''
     }
 
@@ -49,12 +51,14 @@ export default {
     }
 
     const editFromGun = (id) => {
-      todos.get('tasks').get(id).put({desc: task.value})
-      edited.value = true
-      var edited_index = arr.value.findIndex(key => key.taskId === id);
-      arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
-      task.value = ''
-      edited.value = false
+      if(task.value !== '') {
+        todos.get('tasks').get(id).put({desc: task.value})
+        edited.value = true
+        var edited_index = arr.value.findIndex(key => key.taskId === id);
+        arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
+        task.value = ''
+        edited.value = false
+      }
     }
 
     const deleteFromGun = (id) => {
@@ -65,7 +69,7 @@ export default {
     }
 
         
-    todos.get('tasks').map().on((task, id) => { // on snapshot
+    todos.get('tasks').map().once((task, id) => { // on snapshot
       if(task && !seen.has(id)) {
         seen.add(id)
         console.log('pushing')
