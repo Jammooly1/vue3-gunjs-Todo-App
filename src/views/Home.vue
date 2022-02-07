@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <form @submit.prevent="addToGun">
+    <form @submit.prevent>
       <h2>Todo App</h2>
       <input type="text" class="todoInput" placeholder="Enter Todo Item" required v-model="task">
-      <button class="addBtn">Add</button>
+      <button class="addBtn" @click="addToGun">Add</button>
 
-      <div v-for="todo in arr" :key="todo" class="row tasks">
+      <div v-for="todo in arr" :key="todo.taskId" class="row tasks">
         <div class="column">{{ todo.desc }}</div>
         <div class="right-box">
           <div class="column">
@@ -26,14 +26,12 @@
 </template>
 
 <script>
-import Gun from 'gun'
 import { ref } from '@vue/reactivity'
-import { user } from '@/gun/user'
+import { user, gun } from '@/gun/user'
 
 export default {
   name: 'Home',
   setup() {
-    var gun = Gun()
     var todos = gun.get('todos')
     const task = ref('')
     const arr = ref([])
@@ -41,6 +39,7 @@ export default {
     const edited = ref(false)
 
     const addToGun = () => {
+      console.log(task.value)
       todos.get('tasks').set({desc: task.value, checked: false})
       task.value = ''
     }
@@ -69,8 +68,10 @@ export default {
     todos.get('tasks').map().on((task, id) => { // on snapshot
       if(task && !seen.has(id)) {
         seen.add(id)
+        console.log('pushing')
+        console.log(task.desc)
         arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
-        
+        console.log(arr.value)
       }
     })
 
