@@ -2,26 +2,34 @@
   <nav :key="route.fullPath">
       <div class="navbar">
         <div class="navbar-start">
-          <div v-if="user.is" class="navbar-group">
-            <div class="navbar-item">
-              <router-link to="/">Home</router-link>
-            </div>
-            <div class="navbar-item">
-              <router-link to="/about">About</router-link>
-            </div>
-            <div class="navbar-item">
-              <label @click="logout">Log Out</label>
-            </div>
-            
-          </div>
-          <div v-if="!user.is" class="navbar-group">
-            <div class="navbar-item">
-              <router-link to="/login">Login</router-link>
-            </div>
-            <div>
-              <router-link to="/signup">Sign Up</router-link>
+
+          <div class="">
+            <div v-if="user.is" class="navbar-group">
+              <div class="navbar-item">
+                <router-link to="/">Home</router-link>
+              </div>
+              <div class="navbar-item">
+                <router-link to="/about">About</router-link>
+              </div>
+              <div class="navbar-item">
+                <label @click="logout">Log Out</label>
+              </div>
+              <div class="navbar-user">
+                <h4>Hello {{username}}</h4>
+              </div>
             </div>
           </div>
+
+
+            <div v-if="!user.is" class="navbar-group">
+              <div class="navbar-item">
+                <router-link to="/login">Login</router-link>
+              </div>
+              <div>
+                <router-link to="/signup">Sign Up</router-link>
+              </div>
+          </div>
+
 
         </div>
       </div>
@@ -46,7 +54,7 @@ export default {
             router.push('/login')
         }
 
-        return { logout, user, route }
+        return { logout, user, route, username }
     }
 }
 </script>
@@ -58,6 +66,15 @@ export default {
   margin-bottom: 10px;
 }
 
+.logged-in {
+  justify-content: space-between;
+}
+
+.navbar-user {
+  position: absolute;
+  right: 40px;
+}
+
 label {
     color: purple;
 }
@@ -67,7 +84,8 @@ label:hover {
 }
 
 .navbar-start {
-  margin-left: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .navbar-group {

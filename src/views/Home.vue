@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+
     <form @submit.prevent>
       <h2>Todo App</h2>
       <input type="text" class="todoInput" placeholder="Enter Todo Item" required v-model="task">
@@ -19,7 +20,6 @@
           </div>
         </div>
       </div>
-      
     </form>
 
   </div>
@@ -32,7 +32,7 @@ import { user, gun } from '@/gun/user'
 export default {
   name: 'Home',
   setup() {
-    var todos = gun.get('todos')
+    var todos = user.get('todos')
     const task = ref('')
     const arr = ref([])
     const seen = new Set()

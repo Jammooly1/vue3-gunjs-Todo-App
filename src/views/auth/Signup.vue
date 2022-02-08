@@ -33,3 +33,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+input {
+    max-width: 60%;
+}
+</style>
