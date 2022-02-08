@@ -28,7 +28,7 @@
 <script>
 import { ref } from '@vue/reactivity'
 import { user, gun } from '@/gun/user'
-
+import SEA from 'gun/sea'
 export default {
   name: 'Home',
   setup() {
@@ -37,28 +37,54 @@ export default {
     const arr = ref([])
     const seen = new Set()
     const edited = ref(false)
+    let pair = ref(SEA.pair())
 
-    const addToGun = () => {
+    const addToGun = async() => {
       console.log(task.value)
       if(task.value !== '') {
-        todos.get('tasks').set({desc: task.value, checked: false})
+        console.log(pair.value)
+        var data = {desc: task.value, checked: false}
+        var msg = await SEA.encrypt(data, pair.value);
+        console.log(msg)
+        todos.get('tasks').set(msg)
       }
       task.value = ''
     }
 
     const toggleBox = (id, checkedPass) => {
-      todos.get('tasks').get(id).put({checked: checkedPass})
+      todos.get('tasks').get(id).once(async(data) => {
+        var dec = await SEA.decrypt(data, pair.value)
+        dec.checked = checkedPass
+        var enc = await SEA.encrypt(dec, pair.value)
+        todos.get('tasks').get(id).put(enc)
+      })
     }
 
     const editFromGun = (id) => {
-      if(task.value !== '') {
-        todos.get('tasks').get(id).put({desc: task.value})
-        edited.value = true
+      if (task.value !== '') {
+        todos.get('tasks').get(id).once(async(data) => {
+        var dec = await SEA.decrypt(data, pair.value)
+        console.log(dec.desc, task.value)
+        dec.desc = task.value
+        var tmp_checked = dec.checked
+        console.log(dec.desc, task.value)
+        var enc = await SEA.encrypt(dec, pair.value)
+
+        todos.get('tasks').get(id).put(enc)
+
         var edited_index = arr.value.findIndex(key => key.taskId === id);
-        arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
-        task.value = ''
-        edited.value = false
+        arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: tmp_checked})
+      })
       }
+    
+      // if(task.value !== '') {
+      //   todos.get('tasks').get(id).put({desc: task.value})
+      //   edited.value = true
+      //   var edited_index = arr.value.findIndex(key => key.taskId === id);
+      //   arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
+      //   task.value = ''
+      //   edited.value = false
+      // }
     }
 
     const deleteFromGun = (id) => {
@@ -69,13 +95,16 @@ export default {
     }
 
         
-    todos.get('tasks').map().once((task, id) => { // on snapshot
-      if(task && !seen.has(id)) {
+    todos.get('tasks').map().on(async(msg, id) => { // on snapshot
+      var ret = await SEA.decrypt(msg, pair.value)
+      if(ret && !seen.has(id)) {
+        //console.log(ret, id)
         seen.add(id)
-        console.log('pushing')
-        console.log(task.desc)
-        arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
-        console.log(arr.value)
+        //console.log('pushing')
+        //console.log(ret.desc)
+        arr.value.push({desc: ret.desc, taskId: id, checked: ret.checked})
+        //console.log(arr.value)
+        //console.log(pair.value)
       }
     })
 
