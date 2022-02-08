@@ -63,17 +63,17 @@ export default {
     const editFromGun = (id) => {
       if (task.value !== '') {
         todos.get('tasks').get(id).once(async(data) => {
-        var dec = await SEA.decrypt(data, pair.value)
-        console.log(dec.desc, task.value)
-        dec.desc = task.value
-        var tmp_checked = dec.checked
-        console.log(dec.desc, task.value)
-        var enc = await SEA.encrypt(dec, pair.value)
+          var dec = await SEA.decrypt(data, pair.value)
+          console.log(dec.desc, task.value)
+          dec.desc = task.value
+          var tmp_checked = dec.checked
+          console.log(dec.desc, task.value)
+          var enc = await SEA.encrypt(dec, pair.value)
 
-        todos.get('tasks').get(id).put(enc)
+          todos.get('tasks').get(id).put(enc)
 
-        var edited_index = arr.value.findIndex(key => key.taskId === id);
-        arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: tmp_checked})
+          var edited_index = arr.value.findIndex(key => key.taskId === id);
+          arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: tmp_checked})
       })
       }
     
