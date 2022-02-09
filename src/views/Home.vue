@@ -114,7 +114,8 @@ export default {
 
 .column {
   display: inline-block;
-  width: 33%;
+  /* width: 80%; */
+  /* padding-left: 20px */
 }
 
 .right-box {
