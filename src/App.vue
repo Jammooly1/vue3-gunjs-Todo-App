@@ -1,13 +1,12 @@
 <template>
-  <Navbar1/>
+  <Navbar/>
   <router-view/>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar'
-import Navbar1 from '@/components/Navbar1'
 export default {
-  components: { Navbar, Navbar1 },
+  components: { Navbar },
   setup() {
     
   },

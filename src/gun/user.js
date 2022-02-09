@@ -15,7 +15,7 @@ export const username = ref('');
 
 user.get('alias').on(v => username.value = v)
 
-export const checkExists = gun.on('auth', async(event) => {
+gun.on('auth', async(event) => {
     username.value = await user.get('alias');
     console.log('Signed in as ' + username.value);
 })

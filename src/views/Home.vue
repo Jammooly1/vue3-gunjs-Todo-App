@@ -27,7 +27,7 @@
 
 <script>
 import { ref } from '@vue/reactivity'
-import { user } from '@/gun/user'
+import { user, username } from '@/gun/user'
 import SEA from 'gun/sea'
 export default {
   name: 'Home',
@@ -56,6 +56,7 @@ export default {
         var dec = await SEA.decrypt(data, pair.value)
         dec.checked = checkedPass
         var enc = await SEA.encrypt(dec, pair.value)
+
         todos.get('tasks').get(id).put(enc)
       })
     }
@@ -64,7 +65,6 @@ export default {
       if (task.value !== '') {
         todos.get('tasks').get(id).once(async(data) => {
           var dec = await SEA.decrypt(data, pair.value)
-          console.log(dec.desc, task.value)
           dec.desc = task.value
           var tmp_checked = dec.checked
           console.log(dec.desc, task.value)
@@ -94,7 +94,7 @@ export default {
       }
     })
 
-    return { task, arr, addToGun, deleteFromGun, editFromGun, toggleBox }
+    return { task, arr, addToGun, deleteFromGun, editFromGun, toggleBox, username }
   }
 }
 </script>
