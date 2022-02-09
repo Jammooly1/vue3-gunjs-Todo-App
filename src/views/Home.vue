@@ -27,16 +27,16 @@
 
 <script>
 import { ref } from '@vue/reactivity'
-import { user, gun } from '@/gun/user'
+import { user } from '@/gun/user'
 import SEA from 'gun/sea'
 export default {
   name: 'Home',
   setup() {
+
     var todos = user.get('todos')
     const task = ref('')
     const arr = ref([])
     const seen = new Set()
-    const edited = ref(false)
     let pair = ref(SEA.pair())
 
     const addToGun = async() => {
@@ -76,15 +76,6 @@ export default {
           arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: tmp_checked})
       })
       }
-    
-      // if(task.value !== '') {
-      //   todos.get('tasks').get(id).put({desc: task.value})
-      //   edited.value = true
-      //   var edited_index = arr.value.findIndex(key => key.taskId === id);
-      //   arr.value.splice(edited_index, 1, {desc: task.value, taskId: id, checked: task.checked})
-      //   task.value = ''
-      //   edited.value = false
-      // }
     }
 
     const deleteFromGun = (id) => {
@@ -98,13 +89,8 @@ export default {
     todos.get('tasks').map().on(async(msg, id) => { // on snapshot
       var ret = await SEA.decrypt(msg, pair.value)
       if(ret && !seen.has(id)) {
-        //console.log(ret, id)
         seen.add(id)
-        //console.log('pushing')
-        //console.log(ret.desc)
         arr.value.push({desc: ret.desc, taskId: id, checked: ret.checked})
-        //console.log(arr.value)
-        //console.log(pair.value)
       }
     })
 
@@ -126,6 +112,11 @@ export default {
   max-width: 60%;
 }
 
+.column {
+  display: inline-block;
+  width: 33%;
+}
+
 .right-box {
   display: inline-flex;
   margin: 0 auto;
@@ -134,16 +125,3 @@ export default {
   align-items: center;
 }
 </style>
-
-
-// todos.get('tasks').map().on((task, id) => { // on snapshot
-//       if(task && !seen.has(id) || task && edited.value) {
-//         seen.add(id)
-//         if(edited.value) {
-//           edited.value = false
-//         }
-//         else {
-//           arr.value.push({desc: task.desc, taskId: id, checked: task.checked})
-//         }
-//       }
-//     })

@@ -5,13 +5,11 @@ import Signup from '../views/auth/Signup.vue'
 import { user } from '@/gun/user'
 
 const requireAuth = (to, from, next) => {
-  console.log('HELLO, I am in the route guard')
+  //console.log('HELLO, I am in the route guard')
   if(!user.is) {
     next({ name: 'Login' })
-    console.log('1')
   } else {
     next()
-    console.log('2')
   }
 }
 

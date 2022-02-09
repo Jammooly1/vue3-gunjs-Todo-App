@@ -7,7 +7,6 @@ export const gun = GUN();
 
 // SEA
 
-
 // Gun User
 export const user = gun.user().recall({sessionStorage: true});
 
